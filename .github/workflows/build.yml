@@ -17,11 +17,7 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Build and test
-        shell: pwsh
-        run: .\build.cmd
-
-      - name: Package standalone ZIP
+      - name: Build standalone packages
         shell: pwsh
         run: .\package-release.ps1 -Version "1.1.3"
 
@@ -29,6 +25,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: OpenWindow-Windows
-          path: |
-            dist/*.zip
-            dist/checksums.txt
+          path: dist/*.zip
