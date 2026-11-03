@@ -1,0 +1,34 @@
+
+name: Build OpenWindow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Download source
+        uses: actions/checkout@v4
+
+      - name: Install .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build and test
+        shell: pwsh
+        run: .\build.cmd
+
+      - name: Package standalone ZIP
+        shell: pwsh
+        run: .\package-release.ps1 -Version "1.1.3"
+
+      - name: Upload ZIP files
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenWindow-Windows
+          path: |
+            dist/*.zip
+            dist/checksums.txt
